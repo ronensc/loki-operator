@@ -20,6 +20,8 @@ import (
 	"context"
 	"time"
 
+	monitoringv1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
+
 	"github.com/ViaQ/loki-operator/controllers/internal/management/state"
 	"github.com/ViaQ/loki-operator/internal/external/k8s"
 	"github.com/ViaQ/loki-operator/internal/handlers"
@@ -153,7 +155,8 @@ func (r *LokiStackReconciler) buildController(bld k8s.Builder) error {
 		Owns(&appsv1.Deployment{}, updateOrDeleteOnlyPred).
 		Owns(&appsv1.StatefulSet{}, updateOrDeleteOnlyPred).
 		Owns(&rbacv1.ClusterRole{}, updateOrDeleteOnlyPred).
-		Owns(&rbacv1.ClusterRoleBinding{}, updateOrDeleteOnlyPred)
+		Owns(&rbacv1.ClusterRoleBinding{}, updateOrDeleteOnlyPred).
+		Owns(&monitoringv1.PrometheusRule{}, updateOrDeleteOnlyPred)
 
 	if r.Flags.EnableGatewayRoute {
 		bld = bld.Owns(&routev1.Route{}, updateOrDeleteOnlyPred)

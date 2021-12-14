@@ -4,7 +4,6 @@ import (
 	"github.com/ViaQ/logerr/kverrors"
 	lokiv1beta1 "github.com/ViaQ/loki-operator/api/v1beta1"
 	"github.com/ViaQ/loki-operator/internal/manifests/internal"
-
 	"github.com/imdario/mergo"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -49,6 +48,11 @@ func BuildAll(opts Options) ([]client.Object, error) {
 		return nil, err
 	}
 
+	prometheusRuleObjs, err := BuildPrometheusRule(opts)
+	if err != nil {
+		return nil, err
+	}
+
 	res = append(res, cm)
 	res = append(res, distributorObjs...)
 	res = append(res, ingesterObjs...)
@@ -56,6 +60,7 @@ func BuildAll(opts Options) ([]client.Object, error) {
 	res = append(res, compactorObjs...)
 	res = append(res, queryFrontendObjs...)
 	res = append(res, indexGatewayObjs...)
+	res = append(res, prometheusRuleObjs...)
 	res = append(res, BuildLokiGossipRingService(opts.Name))
 
 	if opts.Flags.EnableGateway {

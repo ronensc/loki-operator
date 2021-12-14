@@ -86,6 +86,11 @@ func MutateFuncFor(existing, desired client.Object) controllerutil.MutateFn {
 			wantRt := desired.(*routev1.Route)
 			mutateRoute(rt, wantRt)
 
+		case *monitoringv1.PrometheusRule:
+			pr := existing.(*monitoringv1.PrometheusRule)
+			wantPr := existing.(*monitoringv1.PrometheusRule)
+			mutatePrometheusRule(pr, wantPr)
+
 		default:
 			t := reflect.TypeOf(existing).String()
 			return kverrors.New("missing mutate implementation for resource type", "type", t)
@@ -171,5 +176,9 @@ func mutateIngress(existing, desired *networkingv1.Ingress) {
 func mutateRoute(existing, desired *routev1.Route) {
 	existing.Annotations = desired.Annotations
 	existing.Labels = desired.Labels
+	existing.Spec = desired.Spec
+}
+
+func mutatePrometheusRule(existing, desired *monitoringv1.PrometheusRule) {
 	existing.Spec = desired.Spec
 }

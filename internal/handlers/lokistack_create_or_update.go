@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"os"
 
+	monitoringv1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
 	"github.com/ViaQ/loki-operator/internal/manifests/openshift"
 
 	"github.com/ViaQ/logerr/kverrors"

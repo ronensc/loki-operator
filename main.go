@@ -48,6 +48,7 @@ var scheme = runtime.NewScheme()
 func init() {
 	utilruntime.Must(clientgoscheme.AddToScheme(scheme))
 
+	utilruntime.Must(monitoringv1.AddToScheme(scheme))
 	utilruntime.Must(lokiv1beta1.AddToScheme(scheme))
 	// +kubebuilder:scaffold:scheme
 }
